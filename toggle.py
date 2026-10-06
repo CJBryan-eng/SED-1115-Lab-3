@@ -15,14 +15,24 @@ sw5 = Pin(22, Pin.IN, Pin.PULL_DOWN)
 #led starts off
 led1.off()
 
+#Tracking if button was pressed curing previous loop 
+button_was_pressed = False
+
 #Code keeps running
 while True:
 
+    button_is_pressed = (
+        sw1.value()  or sw2.value() or sw3.value() or sw4.value() or sw5.value() 
+        )
+
     #All switches affect 1 led
-    if sw5.value() == 1 or sw4.value() == 1 or sw3.value() == 1 or sw2.value() == 1 or sw1.value() == 1: 
-        
+    if button_is_pressed and not button_was_pressed:
         #led turns oposite of current state
         led1.toggle() 
-        
         #switches sleep after first press
-        utime.sleep_ms(200)
+        utime.sleep_ms(50)
+
+    #Remeber current button state for next loop 
+    button_was_pressed = button_is_pressed
+
+    utime.sleep_ms(10)  # Short delay 
